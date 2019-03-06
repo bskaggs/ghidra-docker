@@ -1,0 +1,82 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "ghidra.fullname" . }}
+  labels:
+    app.kubernetes.io/name: {{ include "ghidra.name" . }}
+    helm.sh/chart: {{ include "ghidra.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+spec:
+  ports:
+    - port: 13100
+      targetPort: rmi
+      protocol: TCP
+      name: rmi
+  clusterIP: None
+  selector:
+    app.kubernetes.io/name: {{ include "ghidra.name" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ include "ghidra.fullname" . }}
+  labels:
+    app.kubernetes.io/name: {{ include "ghidra.name" . }}
+    helm.sh/chart: {{ include "ghidra.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "ghidra.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ include "ghidra.name" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+    spec:
+      initContainers:
+        - name: chmod-repos
+          image: busybox
+          #ensure everything is owned by the right user
+          command: ['sh', '-c', 'chown -R 999:999 /srv/repositories']
+          volumeMounts:
+            - name: ghidra-repos
+              mountPath: /srv/repositories
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: rmi
+              containerPort: 13100
+              protocol: TCP
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+            - name: ghidra-repos
+              mountPath: /srv/repositories
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+  volumeClaimTemplates:
+  - metadata:
+      name: ghidra-repos
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: {{ .Values.repositories.size }}

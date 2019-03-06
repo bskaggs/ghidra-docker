@@ -4,9 +4,8 @@ This is a dockerized version of Ghidra server meant for multi-user projects.  By
 
 If you want to have a user created at start with the default password of 'changme', set `GHIDRA_DEFAULT_USER` to the username.
 
-For example, to build the container and create a user named `wffried`, run:
+For example, to run the container with a memory limit of 1GB and create a user named `wffried`, use:
 
 ```bash
-docker build -t ghidra .
-docker run -it --rm -m 1G --env GHIDRA_DEFAULT_USER=wffried ghidra
+docker run -it --rm -m 1G --env GHIDRA_DEFAULT_USER=wffried bskaggs/ghidra
 ```
