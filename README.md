@@ -10,4 +10,4 @@ For example, to run the container with a memory limit of 1GB and create a user n
 docker run -it --rm -m 1G --env GHIDRA_DEFAULT_USER=wffried bskaggs/ghidra
 ```
 
-There is also a helm chart in the [ghidra directory](/ghidra) that will create a one-pod StatefulSet with a persistent volume for storing the repository information
+There is also a helm chart for kubernetes in the [ghidra directory](/ghidra) that will create a one-pod StatefulSet with a persistent volume for storing the repository information.
