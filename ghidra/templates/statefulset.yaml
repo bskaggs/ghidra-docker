@@ -51,6 +51,11 @@ spec:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            {{- with .Values.users.default }}
+            - name: GHIDRA_DEFAULT_USERS
+              value: {{ include "helm-toolkit.utils.joinListWithComma" . | quote }}
+            {{- end }}
           ports:
             - name: rmi
               containerPort: 13100

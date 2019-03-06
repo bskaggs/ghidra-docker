@@ -1,11 +1,13 @@
 #!/bin/bash
 GHIDRA_CLASSPATH="$(sed 's/.*\(${ghidra_home}\)/\1/g' "${ghidra_home}/Ghidra/Features/GhidraServer/data/classpath.frag" | sed ':a;N;$!ba;s/\n/:/g'| envsubst )"
 : ${GHIDRA_REPOSITORIES_PATH:=/srv/repositories}
-#create the first user on startup, if users file doesn't exist
-if [ ! -e "${GHIDRA_REPOSITORIES_PATH}/users" ] && [ ! -z "${GHIDRA_DEFAULT_USER}" ]; then
-  echo "Creating user ${GHIDRA_DEFAULT_USER} with default password 'changeme'"
+#create the users on startup, if users file doesn't exist
+if [ ! -e "${GHIDRA_REPOSITORIES_PATH}/users" ] && [ ! -z "${GHIDRA_DEFAULT_USERS}" ]; then
   mkdir -p "${GHIDRA_REPOSITORIES_PATH}/~admin"
-  echo "-add ${GHIDRA_DEFAULT_USER}" > "${GHIDRA_REPOSITORIES_PATH}/~admin/adm.cmd"
+  for GHIDRA_DEFAULT_USER in ${GHIDRA_DEFAULT_USERS//,/ }; do
+    echo "Creating user ${GHIDRA_DEFAULT_USER} with default password 'changeme'"
+    echo "-add ${GHIDRA_DEFAULT_USER}" >> "${GHIDRA_REPOSITORIES_PATH}/~admin/adm.cmd"
+  done
 fi
 exec java \
   -classpath "${GHIDRA_CLASSPATH}" \

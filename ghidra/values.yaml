@@ -5,10 +5,14 @@
 image:
   repository: bskaggs/ghidra
   tag: latest
-  pullPolicy: IfNotPresent
+  pullPolicy: Always
 
 repositories:
-  size: 10 Gi
+  size: 10Gi
+
+users:
+  default:
+    - wwfried
 
 nameOverride: ""
 fullnameOverride: ""
