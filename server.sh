@@ -24,5 +24,3 @@ exec java \
   ghidra.server.remote.GhidraServer \
   -a0 \
   "${GHIDRA_REPOSITORIES_PATH}"
-  
-  #-ip"$(hostname -I)" \
