@@ -31,10 +31,11 @@ You can use Ghidra for headless analysis; be sure to read
 `support/analyzeHeadlessREADME.html` in the Ghidra distribution to find out
 more.
 
-Usernames are by default based on the OS user name, so it's easiest to make one for
-your current user, and one for `ghidra` for headless analysis in a docker
+Usernames are by default based on the OS user name, so it's easiest to make one
+for your current user, and one for `ghidra` for headless analysis in a docker
 container.  However, if you'd like, you can change your user name when launching
-the Ghidra by setting the following environment variable:
+Ghidra (either with the GUI, or headless in docker) by setting the following
+environment variable:
 
 ```bash
 VMARGS=-Duser.name=esfried
