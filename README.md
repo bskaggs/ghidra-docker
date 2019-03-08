@@ -52,6 +52,6 @@ container mounting in, for example, `/usr/bin` on the host as `/data`, and then
 analyze every binary in the directory:
 
 ```bash
-echo changeme | docker run -i --rm -v -m 4G /usr/bin:/data bskaggs/ghidra \
+echo changeme | docker run -i --rm -m 4G -v /usr/bin:/data:ro bskaggs/ghidra \
      support/analyzeHeadless ghidra://172.17.0.2/foo -p -import /data
 ```
