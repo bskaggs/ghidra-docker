@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "ghidra.fullname" . }}
+  name: {{ include "ghidra-server.fullname" . }}
   labels:
-    app.kubernetes.io/name: {{ include "ghidra.name" . }}
-    helm.sh/chart: {{ include "ghidra.chart" . }}
+    app.kubernetes.io/name: {{ include "ghidra-server.name" . }}
+    helm.sh/chart: {{ include "ghidra-server.chart" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
 spec:
@@ -15,28 +15,28 @@ spec:
       name: rmi
   clusterIP: None
   selector:
-    app.kubernetes.io/name: {{ include "ghidra.name" . }}
+    app.kubernetes.io/name: {{ include "ghidra-server.name" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
 ---
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: {{ include "ghidra.fullname" . }}
+  name: {{ include "ghidra-server.fullname" . }}
   labels:
-    app.kubernetes.io/name: {{ include "ghidra.name" . }}
-    helm.sh/chart: {{ include "ghidra.chart" . }}
+    app.kubernetes.io/name: {{ include "ghidra-server.name" . }}
+    helm.sh/chart: {{ include "ghidra-server.chart" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app.kubernetes.io/name: {{ include "ghidra.name" . }}
+      app.kubernetes.io/name: {{ include "ghidra-server.name" . }}
       app.kubernetes.io/instance: {{ .Release.Name }}
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: {{ include "ghidra.name" . }}
+        app.kubernetes.io/name: {{ include "ghidra-server.name" . }}
         app.kubernetes.io/instance: {{ .Release.Name }}
     spec:
       initContainers:
