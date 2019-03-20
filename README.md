@@ -20,6 +20,16 @@ create users named `esfried` and `ghidra`, use:
 docker run -it --rm -m 1G --env GHIDRA_DEFAULT_USERS=esfried,ghidra bskaggs/ghidra
 ```
 
+If you would like to pass any additional flags to the Ghidra server, set
+`GHIDRA_FLAGS` to specify the flags and values. 
+
+For example, to run the Ghidra server with anonymous access enabled and the
+password reset window set to 3 days instead of 1, use:
+
+```bash
+docker run -it --rm --env "GHIDRA_FLAGS=-anonymous -e3" bskaggs/ghidra
+```
+
 ## Helm
 
 There is also a Helm chart for Kubernetes in the [charts/ghidra-server charts

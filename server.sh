@@ -25,4 +25,5 @@ exec java \
   -Djna_tmpdir=/tmp \
   ghidra.server.remote.GhidraServer \
   -a0 \
+  ${GHIDRA_FLAGS:+"$GHIDRA_FLAGS"} \
   "${GHIDRA_REPOSITORIES_PATH}"
