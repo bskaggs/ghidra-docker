@@ -17,7 +17,7 @@ RUN useradd -m ghidra && \
 COPY --chown=ghidra:ghidra launch.sh.patch /tmp/
 
 WORKDIR /opt
-RUN apt-get update && apt-get install -y wget gettext-base patch && \
+RUN apt-get update && apt-get install -y unzip wget gettext-base patch && \
     wget -q -O ghidra.zip https://ghidra-sre.org/ghidra_${GHIDRA_VERSION}.zip && \
     echo "${GHIDRA_SHA256} *ghidra.zip" | sha256sum -c && \
     unzip ghidra.zip && \
